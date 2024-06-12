@@ -118,7 +118,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     MaterialPageRoute(builder: (context) => TestPage()),
                   );
                 },
-                child: Text('aaaa'),
+                child: Text('タイマーテスト'),
               ),
             ],
           ),

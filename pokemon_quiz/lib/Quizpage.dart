@@ -61,6 +61,7 @@ class _Quizpage extends State<Quizpage> {
                   text_input,
                   style: TextStyle(fontSize: 30),
                 ),
+                const SizedBox(width: 60),
                 Text(
                   _counter.toString(),
                   style: TextStyle(fontSize: 30),
