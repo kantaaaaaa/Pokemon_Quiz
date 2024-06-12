@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:html';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:pokemon_quiz/Nextpage.dart';
+import 'package:pokemon_quiz/Quizpage.dart';
 import 'package:pokemon_quiz/testpage.dart';
 
 void main() {
@@ -83,7 +83,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => Nextpage(text_input: 'Level1')),
+                        builder: (context) => Quizpage(level_input: 'Level1')),
                   );
                 },
                 child: Text('Level1'),
@@ -94,7 +94,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => Nextpage(text_input: 'Level2')),
+                        builder: (context) => Quizpage(level_input: 'Level2')),
                   );
                 },
                 child: Text('Level2'),
@@ -105,7 +105,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => Nextpage(text_input: 'Level3')),
+                        builder: (context) => Quizpage(level_input: 'Level3')),
                   );
                 },
                 child: Text('Level3'),
