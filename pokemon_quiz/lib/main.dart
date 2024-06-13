@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:pokemon_quiz/Quizpage.dart';
 import 'package:pokemon_quiz/testpage.dart';
+import 'package:pokemon_quiz/branch.dart';
 
 void main() {
   runApp(const MyApp());
@@ -45,23 +46,6 @@ class MyHomePage extends StatefulWidget {
 // }
 
 class _MyHomePageState extends State<MyHomePage> {
-  // int _counter = 10;
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   // 1. Timer.periodic : 新しい繰り返しタイマーを作成します
-  //   // 1秒ごとに _counterを1ずつ足していく
-  //   Timer.periodic(
-  //     // 第一引数：繰り返す間隔の時間を設定
-  //     const Duration(seconds: 1),
-  //     // 第二引数：その間隔ごとに動作させたい処理を書く
-  //     (Timer timer) {
-  //       _counter--;
-  //       setState(() {});
-  //     },
-  //   );
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -116,6 +100,16 @@ class _MyHomePageState extends State<MyHomePage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => TestPage()),
+                  );
+                },
+                child: Text('タイマーテスト'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  // ここにボタンを押した時に呼ばれるコードを書く
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => branch()),
                   );
                 },
                 child: Text('タイマーテスト'),

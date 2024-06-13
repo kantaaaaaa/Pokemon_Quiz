@@ -14,6 +14,10 @@ class Quizpage extends StatefulWidget {
 
 class _Quizpage extends State<Quizpage> {
   _Quizpage({required this.text_input});
+  List<String> pokemon = ['ピチュー', 'ピカチュウ', 'サトシ', 'ミミッキュ'];
+  String _Answer = 'ピカチュウ';
+  String _userAnswer = '';
+  String _result = '';
 
   String text_input;
 
@@ -30,6 +34,8 @@ class _Quizpage extends State<Quizpage> {
           if (_counter > 0) {
             _counter--;
           } else {
+            stopTimer();
+            Navigator.pop(context);
             print('タイマー終了！');
           }
         });
@@ -42,6 +48,16 @@ class _Quizpage extends State<Quizpage> {
       timer!.cancel();
       timer = null;
     }
+  }
+
+  void _checkAnswer() {
+    setState(() {
+      if (_userAnswer == _Answer) {
+        _result = '正解';
+      } else {
+        _result = '不正解';
+      }
+    });
   }
 
   @override
@@ -84,16 +100,27 @@ class _Quizpage extends State<Quizpage> {
               width: 500,
               child: Image.asset('iamges/pika2.png'),
             ),
+            Text(_result),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    setState(() {
+                      _userAnswer = pokemon[0];
+                      _checkAnswer();
+                    });
+                  },
                   child: Text('ピチュー'),
                 ),
                 const SizedBox(width: 100),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    setState(() {
+                      _userAnswer = pokemon[1];
+                      _checkAnswer();
+                    });
+                  },
                   child: Text('ピカチュウ'),
                 ),
               ],
@@ -103,12 +130,22 @@ class _Quizpage extends State<Quizpage> {
               children: [
                 const SizedBox(height: 80),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    setState(() {
+                      _userAnswer = pokemon[2];
+                      _checkAnswer();
+                    });
+                  },
                   child: Text('サトシ'),
                 ),
                 const SizedBox(width: 100),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    setState(() {
+                      _userAnswer = pokemon[3];
+                      _checkAnswer();
+                    });
+                  },
                   child: Text('ミミッキュ'),
                 ),
               ],
