@@ -53,7 +53,9 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 flutter:
   assets:
-    - iamges/pika2.png
+    - images/pika2.png
+    - images/upa-.png
+
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

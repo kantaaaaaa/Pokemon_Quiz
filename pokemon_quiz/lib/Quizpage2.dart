@@ -1,25 +1,22 @@
-import 'dart:html';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'dart:async';
-
 import 'package:pokemon_quiz/Quizpage2.dart';
 
-class Quizpage extends StatefulWidget {
-  const Quizpage({Key? key, required this.level_input}) : super(key: key);
+class Quizpage2 extends StatefulWidget {
+  const Quizpage2({Key? key, required this.level_input}) : super(key: key);
 
   final String level_input; // 'text_input' プロパティを宣言
 
   @override
-  _Quizpage createState() => _Quizpage(text_input: level_input);
+  _Quizpage2 createState() => _Quizpage2(text_input: level_input);
 }
 
-class _Quizpage extends State<Quizpage> {
-  _Quizpage({required this.text_input});
-  List<String> pokemon = ['ピチュー', 'ピカチュウ', 'サトシ', 'ミミッキュ'];
-  String _Answer = 'ピカチュウ';
+class _Quizpage2 extends State<Quizpage2> {
+  _Quizpage2({required this.text_input});
+  List<String> pokemon = ['パウー', 'コダック', 'ウパー', 'ウハー'];
+  String _Answer = 'ウパー';
   String _userAnswer = '';
   String _result = '';
 
@@ -57,7 +54,7 @@ class _Quizpage extends State<Quizpage> {
                       SizedBox(
                         height: 300,
                         width: 300,
-                        child: Image.asset('images/pika2.png'),
+                        child: Image.asset('images/upa-.png'),
                       ),
                     ],
                   )),
@@ -65,7 +62,6 @@ class _Quizpage extends State<Quizpage> {
                     TextButton(
                       child: Text('次の問題へ進む'),
                       onPressed: () {
-                        stopTimer();
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -139,7 +135,7 @@ class _Quizpage extends State<Quizpage> {
             SizedBox(
               height: 100,
               width: 500,
-              child: Image.asset('images/pika2.png'),
+              child: Image.asset('images/upa-.png'),
             ),
             Text(_result),
             // AnimatedContainer(
@@ -172,7 +168,7 @@ class _Quizpage extends State<Quizpage> {
                                 SizedBox(
                                   height: 300,
                                   width: 300,
-                                  child: Image.asset('images/pika2.png'),
+                                  child: Image.asset('images/upa-.png'),
                                 ),
                               ],
                             )),
@@ -180,7 +176,6 @@ class _Quizpage extends State<Quizpage> {
                               TextButton(
                                 child: Text('次の問題へ進む'),
                                 onPressed: () {
-                                  stopTimer();
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -223,7 +218,7 @@ class _Quizpage extends State<Quizpage> {
                                 SizedBox(
                                   height: 300,
                                   width: 300,
-                                  child: Image.asset('images/pika2.png'),
+                                  child: Image.asset('images/upa-.png'),
                                 ),
                               ],
                             )),
@@ -231,7 +226,6 @@ class _Quizpage extends State<Quizpage> {
                               TextButton(
                                 child: Text('次の問題へ進む'),
                                 onPressed: () {
-                                  stopTimer();
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -273,7 +267,7 @@ class _Quizpage extends State<Quizpage> {
                                 SizedBox(
                                   height: 300,
                                   width: 300,
-                                  child: Image.asset('images/pika2.png'),
+                                  child: Image.asset('images/upa-.png'),
                                 ),
                               ],
                             )),
@@ -281,7 +275,6 @@ class _Quizpage extends State<Quizpage> {
                               TextButton(
                                 child: Text('次の問題へ進む'),
                                 onPressed: () {
-                                  stopTimer();
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -318,7 +311,7 @@ class _Quizpage extends State<Quizpage> {
                                 SizedBox(
                                   height: 300,
                                   width: 300,
-                                  child: Image.asset('images/pika2.png'),
+                                  child: Image.asset('images/upa-.png'),
                                 ),
                               ],
                             )),
@@ -326,7 +319,6 @@ class _Quizpage extends State<Quizpage> {
                               TextButton(
                                 child: Text('次の問題へ進む'),
                                 onPressed: () {
-                                  stopTimer();
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
