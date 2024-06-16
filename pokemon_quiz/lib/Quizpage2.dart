@@ -45,8 +45,8 @@ class _Quizpage2 extends State<Quizpage2> {
               builder: (BuildContext context) {
                 return AlertDialog(
                   title: Text(
-                    '時間切れ',
-                    style: TextStyle(fontSize: 30),
+                    '残念時間切れだよ～',
+                    style: TextStyle(fontSize: 70),
                   ),
                   content: (Column(
                     children: [

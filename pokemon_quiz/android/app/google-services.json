@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "496588237117",
+    "firebase_url": "https://quizapp-a1bd4-default-rtdb.firebaseio.com",
+    "project_id": "quizapp-a1bd4",
+    "storage_bucket": "quizapp-a1bd4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:496588237117:android:a155fd75751bb240077d54",
+        "android_client_info": {
+          "package_name": "com.example.firebase"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCAvYRr1ZOFd_NNlfSdeFvigRqAZi2U91U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:496588237117:android:040d74bc322fd316077d54",
+        "android_client_info": {
+          "package_name": "com.example.pokemon_quiz"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCAvYRr1ZOFd_NNlfSdeFvigRqAZi2U91U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
