@@ -1,5 +1,9 @@
+import 'dart:ui';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'Quizpage_level3.dart';
 import 'firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:async';
@@ -30,6 +34,37 @@ class _MyAppState extends State<MyApp> {
   String LoginPassword = "";
   // ログインメッセージ
   String LoginMessage = "Not Login";
+  String firebaseText = '';
+
+  void _addfirebase() {
+    final db = FirebaseFirestore.instance;
+    final soccer_player = <String, dynamic>{
+      "name": "伊藤ひろき",
+      "team": "バイエルン",
+      "position": "SB,CB",
+      "age": 25
+    };
+
+    db.collection("soccer_players").add(soccer_player).then(
+        (DocumentReference doc) => print("Error writing document: ${doc.id}"));
+  }
+
+  void _viewfirebase() {
+    final db = FirebaseFirestore.instance;
+
+    db.collection("soccer_players").get().then((event) {
+      String text = '';
+
+      for (var doc in event.docs) {
+        print("${doc.id} => ${doc.data()}");
+        text += doc.data().toString();
+      }
+
+      setState(() {
+        firebaseText = text;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +82,10 @@ class _MyAppState extends State<MyApp> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    ImageFiltered(
+                      imageFilter: ImageFilter.blur(sigmaX: 40, sigmaY: 40),
+                      child: Image.asset('images/pika2.png'),
+                    ),
                     // Image.asset('iamges/upa-.png'),
                     ElevatedButton(
                       onPressed: () {
@@ -78,7 +117,7 @@ class _MyAppState extends State<MyApp> {
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                  Quizpage(level_input: 'Level3')),
+                                  Quizpage_level3(level_input: 'Level3')),
                         );
                       },
                       child: Text('Level3'),
@@ -96,12 +135,19 @@ class _MyAppState extends State<MyApp> {
                     ElevatedButton(
                       onPressed: () {
                         // ここにボタンを押した時に呼ばれるコードを書く
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => branch()),
-                        );
+                        _addfirebase();
                       },
-                      child: Text('タイマーテスト'),
+                      child: Text('firestoreに追加'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        // ここにボタンを押した時に呼ばれるコードを書く
+                        _viewfirebase();
+                      },
+                      child: Text('firestoreのデータを表示'),
+                    ),
+                    Text(
+                      '${firebaseText}',
                     ),
                   ],
                 ),

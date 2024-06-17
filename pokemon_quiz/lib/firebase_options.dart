@@ -90,4 +90,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'quizapp-a1bd4.appspot.com',
     measurementId: 'G-HV8JXPNLRJ',
   );
+
 }
