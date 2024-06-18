@@ -29,6 +29,8 @@ class _Quizpage extends State<Quizpage_level3> {
   double height = 0;
   String text_input;
 
+  double sigma = 10;
+
   int _counter = 10;
   Timer? timer;
 
@@ -39,6 +41,10 @@ class _Quizpage extends State<Quizpage_level3> {
       const Duration(seconds: 1),
       (timer) {
         setState(() {
+          sigma -= 1;
+          if (_counter < 1) {
+            sigma = 0;
+          }
           if (_counter > 0) {
             _counter--;
           } else {
@@ -46,6 +52,7 @@ class _Quizpage extends State<Quizpage_level3> {
             // Navigator.pop(context);
             print('タイマー終了！');
             showDialog(
+              barrierDismissible: false,
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
@@ -56,10 +63,6 @@ class _Quizpage extends State<Quizpage_level3> {
                   content: (Column(
                     children: [
                       Text(_Answer, style: TextStyle(fontSize: 20)),
-                      ImageFiltered(
-                        imageFilter: ImageFilter.blur(sigmaX: 40, sigmaY: 40),
-                        child: Image.asset('images/pika2.png'),
-                      ),
                       SizedBox(
                         height: 300,
                         width: 300,
@@ -142,10 +145,13 @@ class _Quizpage extends State<Quizpage_level3> {
                 ),
               ],
             ),
-            SizedBox(
-              height: 100,
-              width: 500,
-              child: Image.asset('images/pika2.png'),
+            ImageFiltered(
+              imageFilter: ImageFilter.blur(sigmaX: sigma, sigmaY: sigma),
+              child: Image.asset(
+                'images/deguda.png',
+                width: 100,
+                height: 100,
+              ),
             ),
             Text(_result),
             // AnimatedContainer(

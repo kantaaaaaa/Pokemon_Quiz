@@ -58,6 +58,7 @@ flutter:
   assets:
     - images/pika2.png
     - images/upa-.png
+    - images/deguda.png
 
 
   # The following line ensures that the Material Icons font is

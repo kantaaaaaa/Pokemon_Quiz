@@ -139,7 +139,7 @@ class _Quizpage extends State<Quizpage> {
             SizedBox(
               height: 100,
               width: 500,
-              child: Image.asset('images/pika2.png'),
+              child: Image.asset('images/deguda.png'),
             ),
             Text(_result),
             // AnimatedContainer(
@@ -160,6 +160,7 @@ class _Quizpage extends State<Quizpage> {
                       _checkAnswer();
                       showDialog(
                         context: context,
+                        barrierDismissible: false,
                         builder: (BuildContext context) {
                           return AlertDialog(
                             title: Text(
