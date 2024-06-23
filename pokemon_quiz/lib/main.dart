@@ -3,12 +3,11 @@ import 'dart:html';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:pokemon_quiz/Quizpage.dart';
-import 'package:pokemon_quiz/Quizpage_level3.dart';
-import 'package:pokemon_quiz/testpage.dart';
 import 'package:pokemon_quiz/branch.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'Quizlistpage.dart';
 import 'Quizpage_level3.dart';
 import 'firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -58,29 +57,20 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   String firebaseText = '';
-  void _addfirebase() {
-    final db = FirebaseFirestore.instance;
-    final soccer_player = <String, dynamic>{
-      "name": "遠藤航",
-      "team": "リヴァプール",
-      "position": "DMF",
-      "age": 31
-    };
-
-    db.collection("soccer_players").add(soccer_player).then(
-        (DocumentReference doc) => print("Error writing document: ${doc.id}"));
-  }
 
   void _viewfirebase() {
     final db = FirebaseFirestore.instance;
 
     db.collection("soccer_players").get().then((event) {
       String text = '';
+      int loop_count = 0;
 
       for (var doc in event.docs) {
-        print("${doc.id} => ${doc.data()}");
-        text += doc.data().toString();
+        print("${doc.data().values}");
+        text += doc.data().values.toString();
+        loop_count++;
       }
+      print(loop_count);
 
       setState(() {
         firebaseText = text;
@@ -104,7 +94,11 @@ class _MyHomePageState extends State<MyHomePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              // Image.asset('iamges/upa-.png'),
+              Image.network(
+                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLYTGVnEVnLIrMEgeqk83_S0i3n76NA8gTSw&s",
+                width: 100,
+                height: 100,
+              ),
               ElevatedButton(
                 onPressed: () {
                   Navigator.push(
@@ -143,10 +137,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   // ここにボタンを押した時に呼ばれるコードを書く
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => TestPage()),
+                    MaterialPageRoute(builder: (context) => QuziListtPage()),
                   );
                 },
-                child: Text('タイマーテスト'),
+                child: Text('クイズデータ一覧ページ'),
               ),
               ElevatedButton(
                 onPressed: () {
@@ -158,13 +152,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 },
                 child: Text('タイマーテスト'),
               ),
-              ElevatedButton(
-                onPressed: () {
-                  // ここにボタンを押した時に呼ばれるコードを書く
-                  _addfirebase();
-                },
-                child: Text('firestoreに追加'),
-              ),
+              // ElevatedButton(
+              //   onPressed: () {
+              //     // ここにボタンを押した時に呼ばれるコードを書く
+              //     _addfirebase();
+              //   },
+              //   child: Text('firestoreに追加'),
+              // ),
               ElevatedButton(
                 onPressed: () {
                   // ここにボタンを押した時に呼ばれるコードを書く

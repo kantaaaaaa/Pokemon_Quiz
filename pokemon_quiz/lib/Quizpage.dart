@@ -32,7 +32,7 @@ class _Quizpage extends State<Quizpage> {
 
   @override
   void initState() {
-    // super.initState();
+    super.initState();
     timer = Timer.periodic(
       const Duration(seconds: 1),
       (timer) {
