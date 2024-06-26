@@ -94,11 +94,11 @@ class _MyHomePageState extends State<MyHomePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Image.network(
-                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLYTGVnEVnLIrMEgeqk83_S0i3n76NA8gTSw&s",
-                width: 100,
-                height: 100,
-              ),
+              // Image.network(
+              //   "https://d.kuku.lu/zh57fph6a",
+              //   width: 100,
+              //   height: 100,
+              // ),
               ElevatedButton(
                 onPressed: () {
                   Navigator.push(

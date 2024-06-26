@@ -47,6 +47,7 @@ class _QuziListtPage extends State<QuziListtPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.errorContainer,
+        title: Text("クイズ一覧ページ"),
       ),
       body: Center(
         child: ListView(
@@ -54,20 +55,36 @@ class _QuziListtPage extends State<QuziListtPage> {
               .map((pokemon) => Column(
                     children: [
                       // カテゴリを追加
-                      Image.network(
-                          'https://www.google.com/url?sa=i&url=https%3A%2F%2Fanimeanime.jp%2Farticle%2F2018%2F06%2F06%2F38039.html&psig=AOvVaw3PeNIpJsCMI3B-K-nqZmiw&ust=1719019742198000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCJDtztrF64YDFQAAAAAdAAAAABAE'),
+                      // Image.network(
+                      //     "https://i.pinimg.com/736x/5d/6d/23/5d6d23fd7adb44baba20a60c252da339.jpg"),
                       Text(pokemon.answer),
-                      Image.network(pokemon.imgURL),
+                      Image.network(
+                        pokemon.imgURL,
+                        width: 100,
+                        height: 100,
+                      ),
 
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(pokemon.first),
+                          SizedBox(
+                            width: 20,
+                          ),
                           Text(pokemon.second),
+                          SizedBox(
+                            width: 20,
+                          ),
                           Text(pokemon.third),
+                          SizedBox(
+                            width: 20,
+                          ),
                           Text(pokemon.fourth),
                         ],
                       ),
+                      const SizedBox(
+                        height: 70,
+                      )
                     ],
                   ))
               .toList(),

@@ -1,10 +1,13 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:async';
+
+import 'package:image_picker_web/image_picker_web.dart';
 
 class Quiz_add extends StatefulWidget {
   const Quiz_add({Key? key}) : super(key: key);
@@ -30,6 +33,20 @@ class _Quiz_add extends State<Quiz_add> {
         _image = XFile(pickedFile.path);
       }
     });
+  }
+
+  void uploadPicture() async {
+    try {
+      Uint8List? uint8list = await ImagePickerWeb.getImageAsBytes();
+      if (uint8list != null) {
+        var metadata = SettableMetadata(
+          contentType: "image/jpeg",
+        );
+        FirebaseStorage.instance.ref("sample").putData(uint8list, metadata);
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override
