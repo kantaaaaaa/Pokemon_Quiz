@@ -108,14 +108,20 @@ class _Quiz_add extends State<Quiz_add> {
   }
 
   void _addfirebase() async {
+    // Firestoreインスタンスを取得
     final db = FirebaseFirestore.instance;
+    final snapshot = await db.collection('Quizdata').count().get();
+    final usersLength = snapshot.count;
+    final nextId = 1 + usersLength!;
+
     final Quizdata = <String, dynamic>{
-      "quiz_id": 3,
+      "quiz_id": nextId,
       "answer": answer,
       "first": first,
       "second": second,
       "third": third,
       "fourth": fourth,
+      "imgURL": "",
     };
 
     await db.collection("Quizdata").add(Quizdata);

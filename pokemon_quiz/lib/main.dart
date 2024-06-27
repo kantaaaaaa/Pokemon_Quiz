@@ -7,6 +7,7 @@ import 'package:pokemon_quiz/branch.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'ImagePickerExample.dart';
 import 'Quizlistpage.dart';
 import 'Quizpage_level3.dart';
 import 'firebase_options.dart';
@@ -95,10 +96,20 @@ class _MyHomePageState extends State<MyHomePage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               // Image.network(
-              //   "https://d.kuku.lu/zh57fph6a",
+              //   "images/usokki-.png",
               //   width: 100,
               //   height: 100,
               // ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ImagePickerExample()),
+                  );
+                },
+                child: Text('画像お試しページ'),
+              ),
               ElevatedButton(
                 onPressed: () {
                   Navigator.push(
