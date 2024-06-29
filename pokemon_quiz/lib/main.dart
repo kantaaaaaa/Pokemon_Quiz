@@ -161,7 +161,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     MaterialPageRoute(builder: (context) => branch()),
                   );
                 },
-                child: Text('タイマーテスト'),
+                child: Text('グリッドビューテストページ'),
               ),
               // ElevatedButton(
               //   onPressed: () {

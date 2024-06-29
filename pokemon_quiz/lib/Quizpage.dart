@@ -1,11 +1,14 @@
 import 'dart:html';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'dart:async';
 
 import 'package:pokemon_quiz/Quizpage2.dart';
+
+import 'Pokemondata.dart';
 
 class Quizpage extends StatefulWidget {
   const Quizpage({Key? key, required this.level_input}) : super(key: key);
@@ -30,9 +33,27 @@ class _Quizpage extends State<Quizpage> {
   int _counter = 10;
   Timer? timer;
 
+  List<Quiz_data> quiz_data = [];
+
+  void _viewfirebase() async {
+    final db = FirebaseFirestore.instance;
+
+    final event = await db.collection('Quizdata').get();
+    //final event = await db.collection("Quizdata").get();
+    final docs = event.docs;
+    final pokemon_data =
+        docs.map((doc) => Quiz_data.fromFirestore(doc)).toList();
+
+    setState(() {
+      this.quiz_data += pokemon_data;
+      print(pokemon_data);
+    });
+  }
+
   @override
   void initState() {
     super.initState();
+    _viewfirebase();
     timer = Timer.periodic(
       const Duration(seconds: 1),
       (timer) {
@@ -57,7 +78,7 @@ class _Quizpage extends State<Quizpage> {
                       SizedBox(
                         height: 300,
                         width: 300,
-                        child: Image.asset('images/pika2.png'),
+                        child: Image.network('images/pika2.png'),
                       ),
                     ],
                   )),
@@ -134,12 +155,13 @@ class _Quizpage extends State<Quizpage> {
                   'Qこのポケモンはだれ？',
                   style: TextStyle(fontSize: 20),
                 ),
+                Text(quiz_data[2].answer)
               ],
             ),
             SizedBox(
               height: 100,
               width: 500,
-              child: Image.asset('images/deguda.png'),
+              child: Image.network('images/deguda.png'),
             ),
             Text(_result),
             // AnimatedContainer(
@@ -173,7 +195,7 @@ class _Quizpage extends State<Quizpage> {
                                 SizedBox(
                                   height: 300,
                                   width: 300,
-                                  child: Image.asset('images/pika2.png'),
+                                  child: Image.network('images/pika2.png'),
                                 ),
                               ],
                             )),
@@ -224,7 +246,7 @@ class _Quizpage extends State<Quizpage> {
                                 SizedBox(
                                   height: 300,
                                   width: 300,
-                                  child: Image.asset('images/pika2.png'),
+                                  child: Image.network('images/pika2.png'),
                                 ),
                               ],
                             )),
@@ -274,7 +296,7 @@ class _Quizpage extends State<Quizpage> {
                                 SizedBox(
                                   height: 300,
                                   width: 300,
-                                  child: Image.asset('images/pika2.png'),
+                                  child: Image.network('images/pika2.png'),
                                 ),
                               ],
                             )),
@@ -319,7 +341,7 @@ class _Quizpage extends State<Quizpage> {
                                 SizedBox(
                                   height: 300,
                                   width: 300,
-                                  child: Image.asset('images/pika2.png'),
+                                  child: Image.network('images/pika2.png'),
                                 ),
                               ],
                             )),
