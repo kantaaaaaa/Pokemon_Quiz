@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:html';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:pokemon_quiz/Quizpage.dart';
 import 'package:pokemon_quiz/branch.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -12,6 +13,8 @@ import 'Quizlistpage.dart';
 import 'Quizpage_level3.dart';
 import 'firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+import 'login.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -85,6 +88,22 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.errorContainer,
         title: Text(widget.title),
+        actions: [
+          IconButton(
+              onPressed: () => {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => login()),
+                    )
+                  },
+              icon: const Icon(
+                Icons.login_outlined,
+                color: Colors.blue,
+              )),
+          const SizedBox(
+            width: 50,
+          )
+        ],
       ),
       body: Container(
         // color: Colors.amber,
@@ -95,6 +114,11 @@ class _MyHomePageState extends State<MyHomePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              Text('Hello World')
+                  .animate(
+                    onPlay: (controller) => controller.repeat(),
+                  )
+                  .shimmer(),
               // Image.network(
               //   "images/usokki-.png",
               //   width: 100,

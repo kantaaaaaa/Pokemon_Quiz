@@ -21,23 +21,41 @@ class _branch extends State<branch> {
   //List<String> numberList = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
   List<Quiz_data> quiz_data = [];
   int _counter = 10;
-  AnimationController? _controller;
-  Timer? _timer;
+  Timer? timer;
 
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 10),
-    );
-    _timer = Timer.periodic(
+    initState2();
+
+    _viewfirebase();
+  }
+
+  void _viewfirebase() async {
+    final db = FirebaseFirestore.instance;
+
+    final event = await db
+        .collection('Quizdata')
+        .orderBy('quiz_id', descending: false)
+        .get();
+    //final event = await db.collection("Quizdata").get();
+    final docs = event.docs;
+    final pokemon = docs.map((doc) => Quiz_data.fromFirestore(doc)).toList();
+
+    setState(() {
+      this.quiz_data = pokemon;
+      print(quiz_data.length);
+    });
+  }
+
+  @override
+  void initState2() {
+    timer = Timer.periodic(
       const Duration(seconds: 1),
       (timer) {
         setState(() {
           if (_counter > 0) {
             _counter--;
-            _controller.value -= 0.1;
           } else {
             stopTimer();
             // Navigator.pop(context);
@@ -49,17 +67,10 @@ class _branch extends State<branch> {
   }
 
   void stopTimer() {
-    if (_timer != null) {
-      _timer!.cancel();
-      _timer = null;
+    if (timer != null) {
+      timer!.cancel();
+      timer = null;
     }
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    _timer?.cancel();
-    super.dispose();
   }
 
   @override
@@ -70,33 +81,20 @@ class _branch extends State<branch> {
       ),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
                   "Level1",
                   style: TextStyle(fontSize: 30),
                 ),
-                const SizedBox(width: 50),
-                AnimatedSize(
-                  duration: const Duration(milliseconds: 500),
-                  curve: Curves.easeInOut,
-                  child: AnimatedDecoratedText(
-                    animation: _controller,
-                    decoration: BoxDecoration(
-                      color: Colors.amber,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Text(
-                      _counter.toString(),
-                      style: TextStyle(fontSize: 50, color: Colors.white),
-                    ),
-                  ),
+                const SizedBox(width: 1100),
+                Text(
+                  _counter.toString(),
+                  style: TextStyle(fontSize: 50, color: Colors.amber),
                 ),
               ],
-            ),
+            )
           ],
         ),
       ),

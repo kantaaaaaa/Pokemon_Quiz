@@ -43,6 +43,9 @@ dependencies:
   image_picker_web: any
   provider: ^6.1.2
   path_provider: ^2.1.3
+  flutter_animate: ^4.5.0
+  riverpod: ^2.5.1
+  flutter_riverpod: ^2.1.1 
 
 dev_dependencies:
   flutter_test:
