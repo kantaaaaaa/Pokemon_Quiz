@@ -3,6 +3,7 @@ import 'dart:html';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pokemon_quiz/Quizpage.dart';
 import 'package:pokemon_quiz/branch.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -11,8 +12,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'ImagePickerExample.dart';
 import 'Quizlistpage.dart';
 import 'Quizpage_level3.dart';
+import 'favorite_quiz.dart';
 import 'firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:riverpod/riverpod.dart';
 
 import 'login.dart';
 
@@ -21,73 +24,31 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+  const app = MaterialApp(home: MyApp());
+  const scope = ProviderScope(child: app);
+  runApp(scope);
 }
 
-class MyApp extends StatelessWidget {
+final UIDProvider = StateProvider<String>((ref) {
+  return "null";
+});
+
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final uid = ref.watch(UIDProvider);
 
-// void timer() {
-//   Timer(const Duration(seconds: 5), handleTimeout);
-// }
+    TAP(WidgetRef ref) {
+      final notifier = ref.read(UIDProvider.notifier);
+      notifier.state = "aaaaaaa";
+    }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-// class Data {
-//   int num;
-
-//   Data({required this.num});
-// }
-
-class _MyHomePageState extends State<MyHomePage> {
-  String firebaseText = '';
-
-  void _viewfirebase() {
-    final db = FirebaseFirestore.instance;
-
-    db.collection("soccer_players").get().then((event) {
-      String text = '';
-      int loop_count = 0;
-
-      for (var doc in event.docs) {
-        print("${doc.data().values}");
-        text += doc.data().values.toString();
-        loop_count++;
-      }
-      print(loop_count);
-
-      setState(() {
-        firebaseText = text;
-      });
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.errorContainer,
-        title: Text(widget.title),
+        //title: Text(widget.title),
         actions: [
           IconButton(
               onPressed: () => {
@@ -114,48 +75,43 @@ class _MyHomePageState extends State<MyHomePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text('Hello World')
+              Text(uid)
                   .animate(
                     onPlay: (controller) => controller.repeat(),
                   )
                   .shimmer(),
-              // Image.network(
-              //   "images/usokki-.png",
-              //   width: 100,
-              //   height: 100,
-              // ),
+              ElevatedButton(
+                  onPressed: () {
+                    TAP(ref);
+                  },
+                  child: Text("変更")),
+              const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
+                  // ここにボタンを押した時に呼ばれるコードを書く
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => ImagePickerExample()),
+                        builder: (context) => QuizListtPage(
+                              uid: uid,
+                            )),
                   );
                 },
-                child: Text('画像お試しページ'),
+                child: Text('クイズデータ一覧ページ'),
               ),
               ElevatedButton(
                 onPressed: () {
+                  // ここにボタンを押した時に呼ばれるコードを書く
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => Quizpage(level_input: 'Level1')),
+                        builder: (context) => Favorite_quiz_Page(
+                              uid: uid,
+                            )),
                   );
                 },
-                child: Text('Level1'),
+                child: Text('お気に入りクイズデータ一覧'),
               ),
-              const SizedBox(height: 10),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => Quizpage(level_input: 'Level2')),
-                  );
-                },
-                child: Text('Level2'),
-              ),
-              const SizedBox(height: 10),
               ElevatedButton(
                 onPressed: () {
                   Navigator.push(
@@ -167,53 +123,139 @@ class _MyHomePageState extends State<MyHomePage> {
                 },
                 child: Text('Level3'),
               ),
-              ElevatedButton(
-                onPressed: () {
-                  // ここにボタンを押した時に呼ばれるコードを書く
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => QuziListtPage()),
-                  );
-                },
-                child: Text('クイズデータ一覧ページ'),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  // ここにボタンを押した時に呼ばれるコードを書く
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => branch()),
-                  );
-                },
-                child: Text('グリッドビューテストページ'),
-              ),
-              // ElevatedButton(
-              //   onPressed: () {
-              //     // ここにボタンを押した時に呼ばれるコードを書く
-              //     _addfirebase();
-              //   },
-              //   child: Text('firestoreに追加'),
-              // ),
-              ElevatedButton(
-                onPressed: () {
-                  // ここにボタンを押した時に呼ばれるコードを書く
-                  _viewfirebase();
-                },
-                child: Text('firestoreのデータを表示'),
-              ),
-              Text(
-                '${firebaseText}',
-              ),
             ],
           ),
         ),
       ),
-
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: _incrementCounter,
-      //   tooltip: 'Increment',
-      //   child: const Icon(Icons.add),
-      // ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
+
+// class MyHomePage extends StatefulWidget {
+//   const MyHomePage({
+//     super.key,
+//     required this.title,
+//   });
+
+//   final String title;
+
+//   @override
+//   State<MyHomePage> createState() => _MyHomePageState();
+// }
+
+// class _MyHomePageState extends State<MyHomePage> {
+//   String firebaseText = '';
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         backgroundColor: Theme.of(context).colorScheme.errorContainer,
+//         //title: Text(widget.title),
+//         actions: [
+//           IconButton(
+//               onPressed: () => {
+//                     Navigator.push(
+//                       context,
+//                       MaterialPageRoute(builder: (context) => login()),
+//                     )
+//                   },
+//               icon: const Icon(
+//                 Icons.login_outlined,
+//                 color: Colors.blue,
+//               )),
+//           const SizedBox(
+//             width: 50,
+//           )
+//         ],
+//       ),
+//       body: Container(
+//         // color: Colors.amber,
+//         height: 300,
+//         width: double.infinity,
+//         child: Center(
+//           child: Column(
+//             mainAxisAlignment: MainAxisAlignment.center,
+//             crossAxisAlignment: CrossAxisAlignment.center,
+//             children: [
+//               Text("uid")
+//                   .animate(
+//                     onPlay: (controller) => controller.repeat(),
+//                   )
+//                   .shimmer(),
+//               Image.network(
+//                 "images/usokki-.png",
+//                 width: 100,
+//                 height: 100,
+//               ),
+//               ElevatedButton(
+//                 onPressed: () {
+//                   Navigator.push(
+//                     context,
+//                     MaterialPageRoute(
+//                         builder: (context) => ImagePickerExample()),
+//                   );
+//                 },
+//                 child: Text('画像お試しページ'),
+//               ),
+//               ElevatedButton(
+//                 onPressed: () {
+//                   Navigator.push(
+//                     context,
+//                     MaterialPageRoute(
+//                         builder: (context) => Quizpage(level_input: 'Level1')),
+//                   );
+//                 },
+//                 child: Text('Level1'),
+//               ),
+//               const SizedBox(height: 10),
+//               ElevatedButton(
+//                 onPressed: () {
+//                   Navigator.push(
+//                     context,
+//                     MaterialPageRoute(
+//                         builder: (context) => Quizpage(level_input: 'Level2')),
+//                   );
+//                 },
+//                 child: Text('Level2'),
+//               ),
+//               const SizedBox(height: 10),
+//               ElevatedButton(
+//                 onPressed: () {
+//                   Navigator.push(
+//                     context,
+//                     MaterialPageRoute(
+//                         builder: (context) =>
+//                             Quizpage_level3(level_input: 'Level3')),
+//                   );
+//                 },
+//                 child: Text('Level3'),
+//               ),
+//               ElevatedButton(
+//                 onPressed: () {
+//                   // ここにボタンを押した時に呼ばれるコードを書く
+//                   Navigator.push(
+//                     context,
+//                     MaterialPageRoute(builder: (context) => QuizListtPage()),
+//                   );
+//                 },
+//                 child: Text('クイズデータ一覧ページ'),
+//               ),
+//               ElevatedButton(
+//                 onPressed: () {
+//                   // ここにボタンを押した時に呼ばれるコードを書く
+//                   Navigator.push(
+//                     context,
+//                     MaterialPageRoute(builder: (context) => branch()),
+//                   );
+//                 },
+//                 child: Text('グリッドビューテストページ'),
+//               ),
+//             ],
+//           ),
+//         ),
+//       ),
+
+//     );
+//   }
+// }

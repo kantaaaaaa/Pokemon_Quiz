@@ -66,7 +66,7 @@ class _Quizpage extends State<Quizpage_level3> {
                       SizedBox(
                         height: 300,
                         width: 300,
-                        child: Image.asset('images/pika2.png'),
+                        child: Image.network('images/pika2.png'),
                       ),
                     ],
                   )),
@@ -147,7 +147,7 @@ class _Quizpage extends State<Quizpage_level3> {
             ),
             ImageFiltered(
               imageFilter: ImageFilter.blur(sigmaX: sigma, sigmaY: sigma),
-              child: Image.asset(
+              child: Image.network(
                 'images/pika2.png',
                 width: 100,
                 height: 100,
@@ -185,7 +185,7 @@ class _Quizpage extends State<Quizpage_level3> {
                                 SizedBox(
                                   height: 300,
                                   width: 300,
-                                  child: Image.asset('images/pika2.png'),
+                                  child: Image.network('images/pika2.png'),
                                 ),
                               ],
                             )),
@@ -236,7 +236,7 @@ class _Quizpage extends State<Quizpage_level3> {
                                 SizedBox(
                                   height: 300,
                                   width: 300,
-                                  child: Image.asset('images/pika2.png'),
+                                  child: Image.network('images/pika2.png'),
                                 ),
                               ],
                             )),
@@ -286,7 +286,7 @@ class _Quizpage extends State<Quizpage_level3> {
                                 SizedBox(
                                   height: 300,
                                   width: 300,
-                                  child: Image.asset('images/pika2.png'),
+                                  child: Image.network('images/pika2.png'),
                                 ),
                               ],
                             )),
@@ -331,7 +331,7 @@ class _Quizpage extends State<Quizpage_level3> {
                                 SizedBox(
                                   height: 300,
                                   width: 300,
-                                  child: Image.asset('images/pika2.png'),
+                                  child: Image.network('images/pika2.png'),
                                 ),
                               ],
                             )),
