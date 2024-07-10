@@ -81,7 +81,7 @@ class login extends ConsumerWidget {
                 },
                 child: Text("Auth"),
               ),
-              Text(LoginMessage)
+              Text(LoginMessage),
             ],
           ),
         ),

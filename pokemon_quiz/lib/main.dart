@@ -18,6 +18,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:riverpod/riverpod.dart';
 
 import 'login.dart';
+import 'searchtest.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -122,6 +123,19 @@ class MyApp extends ConsumerWidget {
                   );
                 },
                 child: Text('Level3'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  // ここにボタンを押した時に呼ばれるコードを書く
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => SearchWidget(
+                              uid: uid,
+                            )),
+                  );
+                },
+                child: Text('検索テストページ'),
               ),
             ],
           ),
