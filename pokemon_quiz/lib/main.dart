@@ -41,6 +41,26 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final uid = ref.watch(UIDProvider);
 
+    void _showPopup(BuildContext context) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('ポップアップタイトル'),
+            content: const Text('ポップアップの内容'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('閉じる'),
+              ),
+            ],
+          );
+        },
+      );
+    }
+
     TAP(WidgetRef ref) {
       final notifier = ref.read(UIDProvider.notifier);
       notifier.state = "aaaaaaa";
