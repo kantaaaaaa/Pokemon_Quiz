@@ -34,32 +34,121 @@ final UIDProvider = StateProvider<String>((ref) {
   return "null";
 });
 
+final Login_Result_Provider = StateProvider<String>((ref) {
+  return "ログインしてないよ";
+});
+
 class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final uid = ref.watch(UIDProvider);
+    final _login_result = ref.watch(Login_Result_Provider);
+    // ログインID
+    String LoginEmail = "";
+    // パスワード
+    String LoginPassword = "";
+    // ログインメッセージ
+    String LoginMessage = "Not Login";
 
-    void _showPopup(BuildContext context) {
-      showDialog(
+    void _showLoginPopup(BuildContext context) {
+      showModalBottomSheet(
         context: context,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.0),
+        ),
         builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('ポップアップタイトル'),
-            content: const Text('ポップアップの内容'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Text('閉じる'),
+          return Container(
+            child: AnimatedContainer(
+              duration:
+                  const Duration(milliseconds: 500), // アニメーション時間を500ミリ秒に変更
+              curve: Curves.easeInOut, // アニメーションカーブをeaseInOutに変更
+              transform: Matrix4.identity()..translate(0.0, 0.0),
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min, // コンテンツの高さを制限
+                  children: [
+                    // メールアドレス入力欄
+                    TextField(
+                      decoration: InputDecoration(
+                        labelText: 'メールアドレス',
+                        border: OutlineInputBorder(),
+                      ),
+                      onChanged: (String inputValue) {
+                        // 値が変更された際に入力内容を変数に保持
+                        LoginEmail = inputValue;
+                      },
+                      keyboardType: TextInputType.emailAddress,
+                    ),
+                    const SizedBox(height: 20.0),
+
+                    // パスワード入力欄
+                    TextField(
+                      obscureText: true,
+                      decoration: InputDecoration(
+                        labelText: 'パスワード',
+                        border: OutlineInputBorder(),
+                      ),
+                      onChanged: (String inputValue) {
+                        // 値が変更された際に入力内容を変数に保持
+                        LoginPassword = inputValue;
+                      },
+                      //obscureText: !_passwordVisible, // パスワードを非表示
+                      keyboardType: TextInputType.visiblePassword,
+                    ),
+                    const SizedBox(height: 20.0),
+
+                    // ログインボタン
+                    ElevatedButton(
+                      onPressed: () async {
+                        try {
+                          // Firebase認証処理
+                          final UserCredential result = await FirebaseAuth
+                              .instance
+                              .signInWithEmailAndPassword(
+                                  email: LoginEmail, password: LoginPassword);
+                          // ログイン成功時にはユーザーを取得
+                          final User user = result.user!;
+                          final String uids = user.uid;
+                          LoginMessage = "ハッピーハッピーハッピー - ${uids}";
+                          final notifier = ref.read(UIDProvider.notifier);
+                          notifier.state = uids;
+
+                          final login_notifier =
+                              ref.read(Login_Result_Provider.notifier);
+                          login_notifier.state = "ログインできたお";
+
+                          Navigator.pop(context);
+                        } catch (e) {
+                          // ログイン失敗時
+                          LoginMessage = "失敗 - ${e.toString()}";
+                        }
+                        // ポップアップを閉じる
+                      },
+                      child: const Text('ログイン'),
+                    ),
+                    const SizedBox(height: 20.0),
+
+                    // ユーザ登録画面へのリンク
+                    TextButton(
+                      onPressed: () {
+                        // ユーザ登録画面へ遷移
+                        Navigator.pushNamed(context, '/signup');
+                      },
+                      child: const Text('新規登録'),
+                    ),
+                  ],
+                ),
               ),
-            ],
+            ),
           );
         },
       );
     }
+
+    bool _passwordVisible = false; // パスワード表示状態
 
     TAP(WidgetRef ref) {
       final notifier = ref.read(UIDProvider.notifier);
@@ -69,10 +158,12 @@ class MyApp extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.errorContainer,
-        //title: Text(widget.title),
+        title: Text(_login_result),
         actions: [
           IconButton(
-            onPressed: () => login(), // アイコンタップ時にポップアップを表示
+            onPressed: () {
+              _showLoginPopup(context);
+            }, // アイコンタップ時にポップアップを表示
             icon: const Icon(
               Icons.login_outlined,
               color: Colors.blue,

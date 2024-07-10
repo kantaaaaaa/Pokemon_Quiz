@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:pokemon_quiz/Favoritedata.dart';
 import 'package:pokemon_quiz/Pokemondata.dart';
+import 'package:pokemon_quiz/favorite_quiz.dart';
 import 'dart:async';
 
 import 'Quiz_add.dart';
@@ -21,6 +22,7 @@ class QuizListtPage extends StatefulWidget {
 }
 
 List<int> favorite_view = [];
+List<int> search_arr = [];
 
 class _QuizListtPage extends State<QuizListtPage> {
   String view_text = "aaaaaaaaaaaaaa";
@@ -30,7 +32,6 @@ class _QuizListtPage extends State<QuizListtPage> {
   List<Favorite_data> favorite_data = [];
 
   List<String> answer_arr = [];
-  List<int> search_arr = [];
 
   final quizdb_index = 0;
   String uid;
@@ -56,6 +57,9 @@ class _QuizListtPage extends State<QuizListtPage> {
     this.quiz_data = pokemon;
     //print(quiz_data[0].answer);
     favorite_view = List.filled(quiz_data.length, 0);
+    for (var i = 0; i < quiz_data.length; i++) {
+      search_arr.add(i);
+    }
 
     for (var i = 0; i < quiz_data.length; i++) {
       answer_arr.add(quiz_data[i].answer);
@@ -91,6 +95,11 @@ class _QuizListtPage extends State<QuizListtPage> {
     //print(quiz_data[0].answer);
     favorite_view = List.filled(quiz_data.length, 0);
 
+    search_arr.clear();
+    for (var i = 0; i < quiz_data.length; i++) {
+      search_arr.add(i);
+    }
+
     final favorite_event =
         await db.collection('Favoritedata').where('uid', isEqualTo: uid).get();
     final favorite_docs = favorite_event.docs;
@@ -113,7 +122,7 @@ class _QuizListtPage extends State<QuizListtPage> {
     int i = 0;
     for (i = i; i < answer_arr.length; i++) {
       if (answer_arr[i].contains(word)) {
-        search_arr.add(i + 1);
+        search_arr.add(i);
         //print(search_arr[i]);
         //print(i);
       }
@@ -134,7 +143,7 @@ class _QuizListtPage extends State<QuizListtPage> {
           .collection('Quizdata')
           //.orderBy('quiz_id', descending: false)
           //.where('answer', isEqualTo: searchword)
-          .where('quiz_id', isEqualTo: element)
+          .where('quiz_id', isEqualTo: element + 1)
           .get();
       final docs = event.docs;
       final pokemon = docs.map((doc) => Quiz_data.fromFirestore(doc)).toList();
@@ -143,28 +152,42 @@ class _QuizListtPage extends State<QuizListtPage> {
     }
 
     favorite_view = List.filled(quiz_data.length, 0);
+    print("ここから下がサーチリスト");
     print(search_arr);
+    int loop = 0;
 
     favorite_data.clear();
     for (var element in search_arr) {
-      print(element);
       final favorite_event = await db
           .collection('Favoritedata')
           .where('uid', isEqualTo: uid)
-          .where('quiz_id', isEqualTo: element)
+          .where('quiz_id', isEqualTo: element + 1)
           .get();
       final favorite_docs = favorite_event.docs;
       final favorite =
           favorite_docs.map((doc) => Favorite_data.fromFirestore(doc)).toList();
+      if (!favorite.isEmpty) {
+        favorite_view[loop]++;
+      }
       this.favorite_data += favorite;
-    }
-    print(favorite_data);
-
-    for (var element in favorite_data) {
-      favorite_view[element.quiz_id - 1]++;
+      loop++;
     }
 
-    print(favorite_view);
+    // for (var element in favorite_data) {
+    //   print(element.quiz_id);
+    //   favorite_view[element.quiz_id - element.quiz_id] = element.quiz_id;
+    // }
+
+    // print(search_arr);
+    // int value;
+    // for (var i = 0; i < favorite_view.length; i++) {
+    //   print("search_arr");
+    //   favorite_view[i] = search_arr[i];
+    // }
+    // favorite_view[0] = 3;
+
+    // print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+    // print(favorite_view);
 
     setState(() {});
   }
@@ -351,10 +374,12 @@ class _FavoriteHeartState extends State<favorite_heart> {
   // int favorite_index = index + 1;
 
   int _iconColor = 0;
+
   Future<void> _favoriteadd(int input_index) async {
     final db = FirebaseFirestore.instance;
+    //print(input_index);
     final Favorite_data = <String, dynamic>{
-      "quiz_id": input_index,
+      "quiz_id": search_arr[input_index - 1] + 1,
       "uid": uid,
     };
 
@@ -368,7 +393,8 @@ class _FavoriteHeartState extends State<favorite_heart> {
     final quizzesRef = db.collection('Favoritedata');
 
     // quiz_idが一致するドキュメントを検索するためのクエリを作成
-    final query = quizzesRef.where('quiz_id', isEqualTo: input_index);
+    final query =
+        quizzesRef.where('quiz_id', isEqualTo: search_arr[input_index - 1] + 1);
 
     // クエリを実行して一致するドキュメントを取得
     final querySnapshot = await query.get();
