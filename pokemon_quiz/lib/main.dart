@@ -52,16 +52,12 @@ class MyApp extends ConsumerWidget {
         //title: Text(widget.title),
         actions: [
           IconButton(
-              onPressed: () => {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => login()),
-                    )
-                  },
-              icon: const Icon(
-                Icons.login_outlined,
-                color: Colors.blue,
-              )),
+            onPressed: () => login(), // アイコンタップ時にポップアップを表示
+            icon: const Icon(
+              Icons.login_outlined,
+              color: Colors.blue,
+            ),
+          ),
           const SizedBox(
             width: 50,
           )
@@ -144,6 +140,8 @@ class MyApp extends ConsumerWidget {
     );
   }
 }
+
+
 
 // class MyHomePage extends StatefulWidget {
 //   const MyHomePage({

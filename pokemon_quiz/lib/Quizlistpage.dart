@@ -23,9 +23,14 @@ class QuizListtPage extends StatefulWidget {
 List<int> favorite_view = [];
 
 class _QuizListtPage extends State<QuizListtPage> {
+  String view_text = "aaaaaaaaaaaaaa";
   _QuizListtPage({required this.uid});
   List<Quiz_data> quiz_data = [];
+  List<Quiz_data> quiz_data2 = [];
   List<Favorite_data> favorite_data = [];
+
+  List<String> answer_arr = [];
+  List<int> search_arr = [];
 
   final quizdb_index = 0;
   String uid;
@@ -38,7 +43,42 @@ class _QuizListtPage extends State<QuizListtPage> {
     _viewfirebase();
   }
 
+  //ページを開いた一度だけ実行する。クイズ全部を表示する。
   void _viewfirebase() async {
+    final db = FirebaseFirestore.instance;
+
+    final event = await db
+        .collection('Quizdata')
+        .orderBy('quiz_id', descending: false)
+        .get();
+    final docs = event.docs;
+    final pokemon = docs.map((doc) => Quiz_data.fromFirestore(doc)).toList();
+    this.quiz_data = pokemon;
+    //print(quiz_data[0].answer);
+    favorite_view = List.filled(quiz_data.length, 0);
+
+    for (var i = 0; i < quiz_data.length; i++) {
+      answer_arr.add(quiz_data[i].answer);
+
+      print(answer_arr[i]);
+    }
+
+    final favorite_event =
+        await db.collection('Favoritedata').where('uid', isEqualTo: uid).get();
+    final favorite_docs = favorite_event.docs;
+    final favorite =
+        favorite_docs.map((doc) => Favorite_data.fromFirestore(doc)).toList();
+    this.favorite_data = favorite;
+
+    for (var element in favorite_data) {
+      favorite_view[element.quiz_id - 1]++;
+    }
+
+    setState(() {});
+  }
+
+  //検索エンジンが何も入力されていないときだけ実行される。クイズ全部を表示する。
+  void _viewfirebase2() async {
     final db = FirebaseFirestore.instance;
 
     final event = await db
@@ -65,6 +105,91 @@ class _QuizListtPage extends State<QuizListtPage> {
     setState(() {});
   }
 
+  //クイズの正解名と入力された文字列を照らし合わせ、一致した文字列のindex番号をリストに入れる
+  void _searchresult(String word) {
+    //print(word);
+    search_arr.clear();
+    //print(search_arr);
+    int i = 0;
+    for (i = i; i < answer_arr.length; i++) {
+      if (answer_arr[i].contains(word)) {
+        search_arr.add(i + 1);
+        //print(search_arr[i]);
+        //print(i);
+      }
+      //print(i);
+    }
+    //print(search_arr);
+  }
+
+  //_searchresultでリストに入れた検索結果をデータベースから取得する
+  void _searchdata() async {
+    //print(searchword);
+    final db = FirebaseFirestore.instance;
+    quiz_data.clear();
+    //print(quiz_data);
+
+    for (var element in search_arr) {
+      final event = await db
+          .collection('Quizdata')
+          //.orderBy('quiz_id', descending: false)
+          //.where('answer', isEqualTo: searchword)
+          .where('quiz_id', isEqualTo: element)
+          .get();
+      final docs = event.docs;
+      final pokemon = docs.map((doc) => Quiz_data.fromFirestore(doc)).toList();
+      this.quiz_data += pokemon;
+      //print(quiz_data);
+    }
+
+    favorite_view = List.filled(quiz_data.length, 0);
+    print(search_arr);
+
+    favorite_data.clear();
+    for (var element in search_arr) {
+      print(element);
+      final favorite_event = await db
+          .collection('Favoritedata')
+          .where('uid', isEqualTo: uid)
+          .where('quiz_id', isEqualTo: element)
+          .get();
+      final favorite_docs = favorite_event.docs;
+      final favorite =
+          favorite_docs.map((doc) => Favorite_data.fromFirestore(doc)).toList();
+      this.favorite_data += favorite;
+    }
+    print(favorite_data);
+
+    for (var element in favorite_data) {
+      favorite_view[element.quiz_id - 1]++;
+    }
+
+    print(favorite_view);
+
+    setState(() {});
+  }
+
+  //ひらがなをカタカナにする
+  _hiraganaToKatakana(val) {
+    return val.replaceAllMapped(RegExp("[ぁ-ゔ]"),
+        (Match m) => String.fromCharCode(m.group(0)!.codeUnitAt(0) + 0x60));
+  }
+
+  //引数で受け取った文字列に英語が含まれていたら、falseを返す。
+  bool containJapanese(String text) {
+    // 半角英数字の正規表現
+    RegExp halfWidthEnglishRegExp = RegExp(r'[a-zA-Z]');
+
+    // 全角英数字の正規表現
+    RegExp fullWidthEnglishRegExp = RegExp(r'[Ａ-Ｚａ-ｚ]');
+
+    // 引数に半角英数字と全角英数字が両方含まれているかチェック
+    bool hasMixedWidthEnglish = halfWidthEnglishRegExp.hasMatch(text) ||
+        fullWidthEnglishRegExp.hasMatch(text);
+
+    return !hasMixedWidthEnglish;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,18 +197,31 @@ class _QuizListtPage extends State<QuizListtPage> {
         title: const Text('問題一覧ページ'),
         actions: [
           SizedBox(
-            width: 800,
+            width: 600,
             child: TextField(
               onChanged: (text) {
                 print('First text field: $text');
                 setState(() {
-                  // view_text = text;
+                  if (text == "") {
+                    _viewfirebase2();
+                  } else {
+                    text = _hiraganaToKatakana(text);
+                    print(containJapanese(text));
+                    if (containJapanese(text)) {
+                      _searchresult(text);
+                      _searchdata();
+                    }
+                  }
                 });
               },
             ),
           ),
           const SizedBox(
-            width: 200,
+            width: 170,
+          ),
+          Text(view_text),
+          const SizedBox(
+            width: 70,
           ),
         ],
       ),
@@ -92,7 +230,7 @@ class _QuizListtPage extends State<QuizListtPage> {
         itemCount: quiz_data.length,
         itemBuilder: (context, index) {
           // favorite_view.add(0);
-          print(favorite_view[index]);
+          //print(favorite_view[index]);
           return Column(
             children: [
               SizedBox(
@@ -181,17 +319,6 @@ class _QuizListtPage extends State<QuizListtPage> {
           crossAxisSpacing: 0,
           childAspectRatio: 1.5,
         ),
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => Quiz_add()),
-          );
-        },
-        label: const Text('クイズ追加'),
-        icon: const Icon(Icons.thumb_up),
-        backgroundColor: Colors.pink,
       ),
     );
   }
