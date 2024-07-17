@@ -172,23 +172,6 @@ class _QuizListtPage extends State<QuizListtPage> {
       this.favorite_data += favorite;
       loop++;
     }
-
-    // for (var element in favorite_data) {
-    //   print(element.quiz_id);
-    //   favorite_view[element.quiz_id - element.quiz_id] = element.quiz_id;
-    // }
-
-    // print(search_arr);
-    // int value;
-    // for (var i = 0; i < favorite_view.length; i++) {
-    //   print("search_arr");
-    //   favorite_view[i] = search_arr[i];
-    // }
-    // favorite_view[0] = 3;
-
-    // print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-    // print(favorite_view);
-
     setState(() {});
   }
 
@@ -229,7 +212,6 @@ class _QuizListtPage extends State<QuizListtPage> {
                     _viewfirebase2();
                   } else {
                     text = _hiraganaToKatakana(text);
-                    print(containJapanese(text));
                     if (containJapanese(text)) {
                       _searchresult(text);
                       _searchdata();
@@ -241,10 +223,6 @@ class _QuizListtPage extends State<QuizListtPage> {
           ),
           const SizedBox(
             width: 170,
-          ),
-          Text(view_text),
-          const SizedBox(
-            width: 70,
           ),
         ],
       ),
@@ -342,6 +320,16 @@ class _QuizListtPage extends State<QuizListtPage> {
           crossAxisSpacing: 0,
           childAspectRatio: 1.5,
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Quiz_add()),
+          );
+        },
+        tooltip: 'Increment',
+        child: const Icon(Icons.add),
       ),
     );
   }

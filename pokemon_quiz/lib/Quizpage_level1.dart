@@ -1,29 +1,30 @@
 import 'dart:html';
 import 'dart:math';
-import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/widgets.dart';
+import 'package:pokemon_quiz/quizcount.dart';
 import 'dart:async';
 
 import 'Pokemondata.dart';
+import 'Quizpage_popup.dart';
 import 'Resultpage.dart';
-import 'quizcount.dart';
 
-class Quizpage_level3 extends StatefulWidget {
-  const Quizpage_level3({Key? key, required this.level_input})
+class Quizpage_level1 extends StatefulWidget {
+  const Quizpage_level1({Key? key, required this.level_input})
       : super(key: key);
 
   final String level_input; // 'text_input' プロパティを宣言
 
   @override
-  _Quizpage createState() => _Quizpage(text_input: level_input);
+  _Quizpage_level1 createState() => _Quizpage_level1(text_input: level_input);
 }
 
-class _Quizpage extends State<Quizpage_level3> {
-  _Quizpage({required this.text_input});
+class _Quizpage_level1 extends State<Quizpage_level1> {
+  _Quizpage_level1({required this.text_input});
   List<String> pokemon = ['ピチュー', 'ピカチュウ', 'サトシ', 'ミミッキュ'];
   List<String> pokemon_view = [];
   String _Answer = '';
@@ -31,7 +32,6 @@ class _Quizpage extends State<Quizpage_level3> {
   String _result = '';
   int loop_index = 0;
   List<String> result_arr = [];
-  double sigma = 7;
 
   String load = "false";
   //final quizdata_count = 0;
@@ -116,10 +116,6 @@ class _Quizpage extends State<Quizpage_level3> {
       const Duration(seconds: 1),
       (timer) {
         setState(() {
-          sigma -= 0.5;
-          if (_counter < 1) {
-            sigma = 0;
-          }
           if (_counter > 0) {
             _counter--;
           } else {
@@ -165,7 +161,7 @@ class _Quizpage extends State<Quizpage_level3> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text("level2"),
+        title: Text("level1"),
       ),
       body: Center(
         child: Column(
@@ -194,14 +190,10 @@ class _Quizpage extends State<Quizpage_level3> {
                         ),
                       ],
                     ),
-                    ImageFiltered(
-                      imageFilter:
-                          ImageFilter.blur(sigmaX: sigma, sigmaY: sigma),
-                      child: Image.network(
-                        quiz_data[loop_index].imgURL,
-                        width: 100,
-                        height: 100,
-                      ),
+                    SizedBox(
+                      height: 100,
+                      width: 500,
+                      child: Image.network(quiz_data[loop_index].imgURL),
                     ),
                     const SizedBox(
                       height: 30,
@@ -318,7 +310,6 @@ class _Quizpage extends State<Quizpage_level3> {
     } else {
       result_arr.add("X");
     }
-    sigma = 7 + (loop_index + 1 * 2);
     print(result_arr);
     showDialog(
       barrierDismissible: false,

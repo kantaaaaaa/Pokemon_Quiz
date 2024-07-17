@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:html';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -9,8 +10,8 @@ import 'package:pokemon_quiz/branch.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'ImagePickerExample.dart';
 import 'Quizlistpage.dart';
+import 'Quizpage_level1.dart';
 import 'Quizpage_level3.dart';
 import 'favorite_quiz.dart';
 import 'firebase_options.dart';
@@ -130,15 +131,6 @@ class MyApp extends ConsumerWidget {
                       child: const Text('ログイン'),
                     ),
                     const SizedBox(height: 20.0),
-
-                    // ユーザ登録画面へのリンク
-                    TextButton(
-                      onPressed: () {
-                        // ユーザ登録画面へ遷移
-                        Navigator.pushNamed(context, '/signup');
-                      },
-                      child: const Text('新規登録'),
-                    ),
                   ],
                 ),
               ),
@@ -150,10 +142,10 @@ class MyApp extends ConsumerWidget {
 
     bool _passwordVisible = false; // パスワード表示状態
 
-    TAP(WidgetRef ref) {
-      final notifier = ref.read(UIDProvider.notifier);
-      notifier.state = "aaaaaaa";
-    }
+    // TAP(WidgetRef ref) {
+    //   final notifier = ref.read(UIDProvider.notifier);
+    //   notifier.state = "aaaaaaa";
+    // }
 
     return Scaffold(
       appBar: AppBar(
@@ -176,49 +168,40 @@ class MyApp extends ConsumerWidget {
       ),
       body: Container(
         // color: Colors.amber,
-        height: 300,
+        height: 400,
         width: double.infinity,
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(uid)
-                  .animate(
-                    onPlay: (controller) => controller.repeat(),
-                  )
-                  .shimmer(),
-              ElevatedButton(
-                  onPressed: () {
-                    TAP(ref);
-                  },
-                  child: Text("変更")),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  // ここにボタンを押した時に呼ばれるコードを書く
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => QuizListtPage(
-                              uid: uid,
-                            )),
-                  );
-                },
-                child: Text('クイズデータ一覧ページ'),
+              Text(
+                "ポケモンクイズ",
+                style: TextStyle(fontSize: 80),
               ),
+              // Text(uid)
+              //     .animate(
+              //       onPlay: (controller) => controller.repeat(),
+              //     )
+              //     .shimmer(),
+              // ElevatedButton(
+              //     onPressed: () {
+              //       TAP(ref);
+              //     },
+              //     child: Text("変更")),
               ElevatedButton(
                 onPressed: () {
-                  // ここにボタンを押した時に呼ばれるコードを書く
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => Favorite_quiz_Page(
-                              uid: uid,
-                            )),
+                        builder: (context) =>
+                            Quizpage_level1(level_input: 'Level1')),
                   );
                 },
-                child: Text('お気に入りクイズデータ一覧'),
+                child: Text('Level1'),
+              ),
+              const SizedBox(
+                height: 20,
               ),
               ElevatedButton(
                 onPressed: () {
@@ -229,21 +212,54 @@ class MyApp extends ConsumerWidget {
                             Quizpage_level3(level_input: 'Level3')),
                   );
                 },
-                child: Text('Level3'),
+                child: Text('Level2'),
               ),
-              ElevatedButton(
-                onPressed: () {
-                  // ここにボタンを押した時に呼ばれるコードを書く
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => SearchWidget(
-                              uid: uid,
-                            )),
-                  );
-                },
-                child: Text('検索テストページ'),
+              const SizedBox(height: 60),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      // ここにボタンを押した時に呼ばれるコードを書く
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => QuizListtPage(
+                                  uid: uid,
+                                )),
+                      );
+                    },
+                    child: Text('クイズデータ一覧ページ'),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      // ここにボタンを押した時に呼ばれるコードを書く
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Favorite_quiz_Page(
+                                  uid: uid,
+                                )),
+                      );
+                    },
+                    child: Text('お気に入りクイズデータ一覧'),
+                  ),
+                ],
               ),
+
+              // ElevatedButton(
+              //   onPressed: () {
+              //     // ここにボタンを押した時に呼ばれるコードを書く
+              //     Navigator.push(
+              //       context,
+              //       MaterialPageRoute(builder: (context) => SearchWidget()),
+              //     );
+              //   },
+              //   child: Text('検索テストページ'),
+              // ),
             ],
           ),
         ),

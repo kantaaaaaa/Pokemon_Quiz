@@ -6,9 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'dart:async';
 
-import 'package:pokemon_quiz/Quizpage2.dart';
-
 import 'Pokemondata.dart';
+import 'Quizpage_popup.dart';
 
 class Quizpage extends StatefulWidget {
   const Quizpage({Key? key, required this.level_input}) : super(key: key);
@@ -64,41 +63,7 @@ class _Quizpage extends State<Quizpage> {
             stopTimer();
             // Navigator.pop(context);
             print('タイマー終了！');
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: Text(
-                    '時間切れ',
-                    style: TextStyle(fontSize: 30),
-                  ),
-                  content: (Column(
-                    children: [
-                      Text(_Answer, style: TextStyle(fontSize: 20)),
-                      SizedBox(
-                        height: 300,
-                        width: 300,
-                        child: Image.network('images/pika2.png'),
-                      ),
-                    ],
-                  )),
-                  actions: <Widget>[
-                    TextButton(
-                      child: Text('次の問題へ進む'),
-                      onPressed: () {
-                        stopTimer();
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  Quizpage2(level_input: 'Level1')),
-                        );
-                      },
-                    ),
-                  ],
-                );
-              },
-            );
+            // timeout(context, "ピカチュウ", 'images/pika2.png');
           }
         });
       },
@@ -204,12 +169,12 @@ class _Quizpage extends State<Quizpage> {
                                 child: Text('次の問題へ進む'),
                                 onPressed: () {
                                   stopTimer();
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            Quizpage2(level_input: 'Level1')),
-                                  );
+                                  // Navigator.push(
+                                  //   context,
+                                  //   MaterialPageRoute(
+                                  //       builder: (context) =>
+                                  //           Quizpage2(level_input: 'Level1')),
+                                  // );
                                 },
                               ),
                             ],
@@ -255,12 +220,12 @@ class _Quizpage extends State<Quizpage> {
                                 child: Text('次の問題へ進む'),
                                 onPressed: () {
                                   stopTimer();
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            Quizpage2(level_input: 'Level1')),
-                                  );
+                                  // Navigator.push(
+                                  //   context,
+                                  //   MaterialPageRoute(
+                                  //       builder: (context) =>
+                                  //           Quizpage2(level_input: 'Level1')),
+                                  // );
                                 },
                               ),
                             ],
@@ -305,12 +270,12 @@ class _Quizpage extends State<Quizpage> {
                                 child: Text('次の問題へ進む'),
                                 onPressed: () {
                                   stopTimer();
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            Quizpage2(level_input: 'Level1')),
-                                  );
+                                  // Navigator.push(
+                                  //   context,
+                                  //   MaterialPageRoute(
+                                  //       builder: (context) =>
+                                  //           Quizpage2(level_input: 'Level1')),
+                                  // );
                                 },
                               ),
                             ],
@@ -350,12 +315,12 @@ class _Quizpage extends State<Quizpage> {
                                 child: Text('次の問題へ進む'),
                                 onPressed: () {
                                   stopTimer();
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            Quizpage2(level_input: 'Level1')),
-                                  );
+                                  // Navigator.push(
+                                  //   context,
+                                  //   MaterialPageRoute(
+                                  //       builder: (context) =>
+                                  //           Quizpage2(level_input: 'Level1')),
+                                  // );
                                 },
                               ),
                             ],

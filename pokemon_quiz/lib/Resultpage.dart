@@ -1,127 +1,137 @@
-// import 'dart:async';
-// import 'dart:html';
-// import 'package:flutter/material.dart';
-// import 'package:flutter/widgets.dart';
-// import 'package:pokemon_quiz/Quizpage.dart';
-// import 'package:pokemon_quiz/testpage.dart';
-// import 'package:pokemon_quiz/branch.dart';
+import 'dart:html';
+import 'dart:math';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter/widgets.dart';
+import 'package:pokemon_quiz/quizcount.dart';
+import 'dart:async';
 
-// class Resultpage extends StatelessWidget {
-//   const MyApp({super.key});
+import 'Pokemondata.dart';
+import 'Quizpage_popup.dart';
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: 'Flutter Demo',
-//       theme: ThemeData(
-//         // colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-//         useMaterial3: true,
-//       ),
-//       home: const MyHomePage(title: 'Flutter Demo Home Page'),
-//     );
-//   }
-// }
+class Resultpage extends StatefulWidget {
+  final List<String> resultList;
+  final List<String> searchList;
 
-// // void timer() {
-// //   Timer(const Duration(seconds: 5), handleTimeout);
-// // }
+  const Resultpage(
+      {Key? key, required this.resultList, required this.searchList})
+      : super(key: key);
 
-// class MyHomePage extends StatefulWidget {
-//   const MyHomePage({super.key, required this.title});
+  @override
+  _Resultpage createState() => _Resultpage();
+}
 
-//   final String title;
+class _Resultpage extends State<Resultpage> {
+  List<Quiz_data> quiz_data = [];
 
-//   @override
-//   State<MyHomePage> createState() => _MyHomePageState();
-// }
+  // void input_quiz() async {
+  //   for (var element in widget.searchList) {
+  //     final db = FirebaseFirestore.instance;
+  //     final event = await db
+  //         .collection('Quizdata')
+  //         .where('quiz_id', isEqualTo: element)
+  //         .get();
+  //     final docs = event.docs;
+  //     final pokemon = docs.map((doc) => Quiz_data.fromFirestore(doc)).toList();
+  //     this.quiz_data += pokemon;
+  //     //print(quiz_data);
+  //   }
+  // }
 
-// // class Data {
-// //   int num;
+  // いっそのことこの関数の中で全部やっちゃおう
+  // void firedata() async {
+  //   final quizdata_count = await addfirebase_method();
+  //   int? value = quizdata_count;
+  //   search_arr = generateRandomList(value!);
+  //   input_quiz();
 
-// //   Data({required this.num});
-// // }
+  //   await Future.delayed(const Duration(seconds: 3), () {
+  //     setState(() {
+  //       load = "true";
+  //       _counter += 3;
+  //     });
+  //   });
+  //   now_quiz.add(quiz_data[0].first);
+  //   now_quiz.add(quiz_data[0].second);
+  //   now_quiz.add(quiz_data[0].third);
+  //   now_quiz.add(quiz_data[0].fourth);
+  //   _Answer = quiz_data[0].answer;
 
-// class _MyHomePageState extends State<MyHomePage> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         backgroundColor: Theme.of(context).colorScheme.errorContainer,
-//         title: Text(widget.title),
-//       ),
-//       body: Container(
-//         // color: Colors.amber,
-//         height: 300,
-//         width: double.infinity,
-//         child: Center(
-//           child: Column(
-//             mainAxisAlignment: MainAxisAlignment.center,
-//             crossAxisAlignment: CrossAxisAlignment.center,
-//             children: [
-//               // Image.asset('iamges/upa-.png'),
-//               ElevatedButton(
-//                 onPressed: () {
-//                   Navigator.push(
-//                     context,
-//                     MaterialPageRoute(
-//                         builder: (context) => Quizpage(level_input: 'Level1')),
-//                   );
-//                 },
-//                 child: Text('Level1'),
-//               ),
-//               const SizedBox(height: 10),
-//               ElevatedButton(
-//                 onPressed: () {
-//                   Navigator.push(
-//                     context,
-//                     MaterialPageRoute(
-//                         builder: (context) => Quizpage(level_input: 'Level2')),
-//                   );
-//                 },
-//                 child: Text('Level2'),
-//               ),
-//               const SizedBox(height: 10),
-//               ElevatedButton(
-//                 onPressed: () {
-//                   Navigator.push(
-//                     context,
-//                     MaterialPageRoute(
-//                         builder: (context) => Quizpage(level_input: 'Level3')),
-//                   );
-//                 },
-//                 child: Text('Level3'),
-//               ),
-//               ElevatedButton(
-//                 onPressed: () {
-//                   // ここにボタンを押した時に呼ばれるコードを書く
-//                   Navigator.push(
-//                     context,
-//                     MaterialPageRoute(builder: (context) => TestPage()),
-//                   );
-//                 },
-//                 child: Text('タイマーテスト'),
-//               ),
-//               ElevatedButton(
-//                 onPressed: () {
-//                   // ここにボタンを押した時に呼ばれるコードを書く
-//                   Navigator.push(
-//                     context,
-//                     MaterialPageRoute(builder: (context) => branch()),
-//                   );
-//                 },
-//                 child: Text('タイマーテスト'),
-//               ),
-//             ],
-//           ),
-//         ),
-//       ),
+  //   // await Future.delayed(const Duration(seconds: 5));
+  //   // print(quizdata_count);
+  //   // print(quiz_data[0].answer);
+  //   print(now_quiz);
+  //   print(search_arr);
+  // }
 
-//       // floatingActionButton: FloatingActionButton(
-//       //   onPressed: _incrementCounter,
-//       //   tooltip: 'Increment',
-//       //   child: const Icon(Icons.add),
-//       // ), // This trailing comma makes auto-formatting nicer for build methods.
-//     );
-//   }
-// }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   input_quiz();
+
+  //   print(quiz_data);
+  // }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: Text("リザルトページ"),
+      ),
+      body: Center(
+        child: Column(
+          children: [
+            Column(
+              children: [
+                Text(
+                  "あなたの結果は...",
+                  style: TextStyle(fontSize: 30),
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                for (var i = 0; i < 3; i++)
+                  Column(
+                    children: [
+                      Text(
+                        widget.resultList[i],
+                        style: TextStyle(
+                          fontSize: 50,
+                          color: widget.resultList[i] == "〇"
+                              ? Colors.red
+                              : Colors.blue,
+                        ),
+                      ),
+
+                      Image.network(
+                        widget.searchList[i],
+                        width: 300,
+                        height: 300,
+                      ),
+                      // Text(quiz_data[i].answer),
+                    ],
+                  ), // 各 for ループ内でカンマを追加
+              ],
+            ),
+            const SizedBox(
+              height: 40,
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.popUntil(
+                    context, (route) => route.isFirst); // 最初の画面まで戻る
+              },
+              child: Text("ホームページに戻る"),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

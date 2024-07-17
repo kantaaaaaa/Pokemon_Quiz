@@ -9,6 +9,8 @@ import 'dart:async';
 
 import 'package:image_picker_web/image_picker_web.dart';
 
+import 'quizcount.dart';
+
 class Quiz_add extends StatefulWidget {
   const Quiz_add({Key? key}) : super(key: key);
 
@@ -108,13 +110,15 @@ class _Quiz_add extends State<Quiz_add> {
   }
 
   void _addfirebase() async {
-    // Firestoreインスタンスを取得
     final db = FirebaseFirestore.instance;
-    final snapshot = await db.collection('Quizdata').count().get();
-    final usersLength = snapshot.count;
-    final nextId = 1 + usersLength!;
 
-    final Quizdata = <String, dynamic>{
+    // Firestoreインスタンスを取得
+    final usersLength = await addfirebase_method();
+    final nextId = await 1 + usersLength!;
+
+    print(nextId);
+
+    final Quizdata = await <String, dynamic>{
       "quiz_id": nextId,
       "answer": answer,
       "first": first,
